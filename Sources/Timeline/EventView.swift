@@ -1,8 +1,16 @@
 import UIKit
 
+public protocol EventViewDelegate: AnyObject {
+  func eventViewDidConfigure(_ eventView: EventView)
+  func eventViewDidPrepareForReuse(_ eventView: EventView)
+  func eventView(_ eventView: EventView, didUpdateWithDescriptor event: EventDescriptor)
+}
+
 open class EventView: UIView {
   public var descriptor: EventDescriptor?
   public var color = SystemColors.label
+
+  public weak var delegate: EventViewDelegate?
 
   public var contentHeight: CGFloat {
     textView.frame.height
@@ -41,6 +49,14 @@ open class EventView: UIView {
     }
   }
 
+  public func didConfigure() {
+    delegate?.eventViewDidConfigure(self)
+  }
+
+  public func prepareForReuse() {
+    delegate?.eventViewDidPrepareForReuse(self)
+  }
+
   public func updateWithDescriptor(event: EventDescriptor) {
     if let attributedText = event.attributedText {
       textView.attributedText = attributedText
@@ -60,6 +76,7 @@ open class EventView: UIView {
       $0.isHidden = event.editedEvent == nil
     }
     drawsShadow = event.editedEvent != nil
+    delegate?.eventView(self, didUpdateWithDescriptor: event)
     setNeedsDisplay()
     setNeedsLayout()
   }

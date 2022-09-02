@@ -5,6 +5,10 @@ public protocol TimelineViewDelegate: AnyObject {
   func timelineView(_ timelineView: TimelineView, didLongPressAt date: Date)
   func timelineView(_ timelineView: TimelineView, didTap event: EventView)
   func timelineView(_ timelineView: TimelineView, didLongPress event: EventView)
+
+  func timelineView(_ timelineView: TimelineView, didConfigure event: EventView)
+  func timelineView(_ timelineView: TimelineView, didPrepareForReuse event: EventView)
+  func timelineView(_ timelineView: TimelineView, forEvent event: EventView, didUpdateWith descriptor: EventDescriptor)
 }
 
 public final class TimelineView: UIView {
@@ -496,6 +500,11 @@ public final class TimelineView: UIView {
   }
 
   private func prepareEventViews() {
+    eventViews.forEach {
+      $0.prepareForReuse()
+      $0.delegate = nil
+    }
+
     pool.enqueue(views: eventViews)
     eventViews.removeAll()
     for _ in regularLayoutAttributes {
@@ -503,11 +512,18 @@ public final class TimelineView: UIView {
       if newView.superview == nil {
         addSubview(newView)
       }
+      newView.delegate = self
+      newView.didConfigure()
       eventViews.append(newView)
     }
   }
 
   public func prepareForReuse() {
+    eventViews.forEach {
+      $0.prepareForReuse()
+      $0.delegate = nil
+    }
+    
     pool.enqueue(views: eventViews)
     eventViews.removeAll()
     setNeedsDisplay()
@@ -570,4 +586,20 @@ public final class TimelineView: UIView {
     let endRange = calendar.date(byAdding: .minute, value: splitMinuteInterval, to: beginningRange)!
     return DateInterval(start: beginningRange, end: endRange)
   }
+}
+
+extension TimelineView: EventViewDelegate {
+
+  public func eventViewDidConfigure(_ eventView: EventView) {
+    delegate?.timelineView(self, didConfigure: eventView)
+  }
+
+  public func eventViewDidPrepareForReuse(_ eventView: EventView) {
+    delegate?.timelineView(self, didPrepareForReuse: eventView)
+  }
+
+  public func eventView(_ eventView: EventView, didUpdateWithDescriptor event: EventDescriptor) {
+    delegate?.timelineView(self, forEvent: eventView, didUpdateWith: event)
+  }
+
 }

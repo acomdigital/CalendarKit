@@ -91,6 +91,15 @@ open class DayViewController: UIViewController, EventDataSource, DayViewDelegate
   open func dayViewDidLongPressEventView(_ eventView: EventView) {
   }
 
+  open func dayViewDidConfigureEventView(_ eventView: EventView) {
+  }
+
+  open func dayViewDidPrepareForReuseEventView(_ eventView: EventView) {
+  }
+
+  open func dayViewDidUpdateEventView(_ eventView: EventView, with descriptor: EventDescriptor) {
+  }
+
   open func dayView(dayView: DayView, didTapTimelineAt date: Date) {
   }
   

@@ -3,6 +3,9 @@ import UIKit
 public protocol TimelinePagerViewDelegate: AnyObject {
   func timelinePagerDidSelectEventView(_ eventView: EventView)
   func timelinePagerDidLongPressEventView(_ eventView: EventView)
+  func timelinePagerDidConfigureEventView(_ eventView: EventView)
+  func timelinePagerDidPrepareForReuseEventView(_ eventView: EventView)
+  func timelinePagerDidUpdateEventView(_ eventView: EventView, with descriptor: EventDescriptor)
   func timelinePager(timelinePager: TimelinePagerView, didTapTimelineAt date: Date)
   func timelinePagerDidBeginDragging(timelinePager: TimelinePagerView)
   func timelinePagerDidTransitionCancel(timelinePager: TimelinePagerView)
@@ -522,4 +525,17 @@ public final class TimelinePagerView: UIView, UIGestureRecognizerDelegate, UIScr
   public func timelineView(_ timelineView: TimelineView, didLongPress event: EventView) {
     delegate?.timelinePagerDidLongPressEventView(event)
   }
+
+  public func timelineView(_ timelineView: TimelineView, didConfigure event: EventView) {
+    delegate?.timelinePagerDidConfigureEventView(event)
+  }
+
+  public func timelineView(_ timelineView: TimelineView, didPrepareForReuse event: EventView) {
+    delegate?.timelinePagerDidPrepareForReuseEventView(event)
+  }
+
+  public func timelineView(_ timelineView: TimelineView, forEvent event: EventView, didUpdateWith descriptor: EventDescriptor) {
+    delegate?.timelinePagerDidUpdateEventView(event, with: descriptor)
+  }
+
 }

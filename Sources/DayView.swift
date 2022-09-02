@@ -3,6 +3,9 @@ import UIKit
 public protocol DayViewDelegate: AnyObject {
   func dayViewDidSelectEventView(_ eventView: EventView)
   func dayViewDidLongPressEventView(_ eventView: EventView)
+  func dayViewDidConfigureEventView(_ eventView: EventView)
+  func dayViewDidPrepareForReuseEventView(_ eventView: EventView)
+  func dayViewDidUpdateEventView(_ eventView: EventView, with descriptor: EventDescriptor)
   func dayView(dayView: DayView, didTapTimelineAt date: Date)
   func dayView(dayView: DayView, didLongPressTimelineAt date: Date)
   func dayViewDidBeginDragging(dayView: DayView)
@@ -188,6 +191,15 @@ public class DayView: UIView, TimelinePagerViewDelegate {
   }
   public func timelinePagerDidLongPressEventView(_ eventView: EventView) {
     delegate?.dayViewDidLongPressEventView(eventView)
+  }
+  public func timelinePagerDidConfigureEventView(_ eventView: EventView) {
+    delegate?.dayViewDidConfigureEventView(eventView)
+  }
+  public func timelinePagerDidPrepareForReuseEventView(_ eventView: EventView) {
+    delegate?.dayViewDidPrepareForReuseEventView(eventView)
+  }
+  public func timelinePagerDidUpdateEventView(_ eventView: EventView, with descriptor: EventDescriptor) {
+    delegate?.dayViewDidUpdateEventView(eventView, with: descriptor)
   }
   public func timelinePagerDidBeginDragging(timelinePager: TimelinePagerView) {
     delegate?.dayViewDidBeginDragging(dayView: self)
