@@ -11,13 +11,19 @@ public final class AllDayView: UIView {
       self.reloadData()
     }
   }
-  
+
+  public var calendar: Calendar = Calendar.autoupdatingCurrent {
+    didSet {
+      updateAllDayLabel()
+    }
+  }
+
   public private(set) var eventViews = [EventView]()
   
   private lazy var textLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = localizedString("all-day")
+    label.text = localizedString("all-day", locale: calendar.locale)
     label.setContentCompressionResistancePriority(.required, for: .horizontal)
     return label
   }()
@@ -63,6 +69,10 @@ public final class AllDayView: UIView {
     backgroundColor = style.backgroundColor
     textLabel.font = style.allDayFont
     textLabel.textColor = style.allDayColor
+  }
+
+  private func updateAllDayLabel() {
+    textLabel.text = localizedString("all-day", locale: calendar.locale)
   }
   
   private func configure() {

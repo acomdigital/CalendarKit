@@ -33,7 +33,7 @@ struct TimeStringsFactory {
     var am = numbers.map { $0 + " " + calendar.amSymbol}
     var pm = numbers.map { $0 + " " + calendar.pmSymbol}
     
-    am.append(localizedString("12:00"))
+    am.append(localizedString("12:00", locale: calendar.locale))
     pm.removeFirst()
     pm.append(am.first!)
     return am + pm

@@ -108,6 +108,7 @@ public final class TimelineView: UIView {
     didSet {
       eventEditingSnappingBehavior.calendar = calendar
       nowLine.calendar = calendar
+      allDayView.calendar = calendar
       regenerateTimeStrings()
       setNeedsLayout()
     }

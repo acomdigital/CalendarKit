@@ -34,3 +34,15 @@ func localizedString(_ key: String) -> String {
                                             value: nil,
                                             table: nil)
 }
+
+func localizedString(_ key: String, locale: Locale?) -> String {
+    guard let lang = locale?.identifier else {
+        return localizedString(key)
+    }
+    guard let path = Bundle.localizationBundle.path(forResource: lang, ofType: "lproj"),
+          let bundle = Bundle(path: path) else {
+        return localizedString(key)
+    }
+
+    return NSLocalizedString(key, tableName: nil, bundle: bundle, value: "", comment: "")
+}
