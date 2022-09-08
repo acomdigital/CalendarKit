@@ -38,6 +38,11 @@ public final class DaySymbolsView: UIView {
     configure()
   }
 
+  public func updateCalendar(_ newCalendar: Calendar) {
+    calendar = newCalendar
+    configure()
+  }
+
   private func configure() {
     let daySymbols = calendar.veryShortWeekdaySymbols
     let weekendMask = [true] + [Bool](repeating: false, count: 5) + [true]

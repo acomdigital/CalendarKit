@@ -2,7 +2,7 @@ import UIKit
 
 public final class DayHeaderView: UIView, DaySelectorDelegate, DayViewStateUpdating, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
   public private(set) var daysInWeek = 7
-  public let calendar: Calendar
+  public private(set) var calendar: Calendar
 
   private var style = DayHeaderStyle()
   private var currentSizeClass = UIUserInterfaceSizeClass.compact
@@ -100,6 +100,14 @@ public final class DayHeaderView: UIView, DaySelectorDelegate, DayViewStateUpdat
     (pagingViewController.viewControllers as? [DaySelectorController])?.forEach{$0.updateStyle(newStyle.daySelector)}
     backgroundColor = style.backgroundColor
     separator.backgroundColor = style.separatorColor
+  }
+
+  public func updateCalendar(_ newCalendar: Calendar) {
+    calendar = newCalendar
+
+    swipeLabelView.updateCalendar(calendar)
+    daySymbolsView.updateCalendar(calendar)
+    (pagingViewController.viewControllers as? [DaySelectorController])?.forEach{$0.calendar = calendar}
   }
 
   override public func layoutSubviews() {

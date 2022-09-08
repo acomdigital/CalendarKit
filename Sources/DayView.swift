@@ -136,6 +136,12 @@ public class DayView: UIView, TimelinePagerViewDelegate {
     timelinePagerView.updateStyle(style.timeline)
   }
 
+  public func updateCalendar(_ newCalendar: Calendar) {
+    calendar = newCalendar
+    dayHeaderView.updateCalendar(newCalendar)
+    timelinePagerView.updateCalendar(newCalendar)
+  }
+
   public func timelinePanGestureRequire(toFail gesture: UIGestureRecognizer) {
     timelinePagerView.timelinePanGestureRequire(toFail: gesture)
   }

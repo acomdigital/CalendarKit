@@ -58,7 +58,8 @@ public final class TimelineView: UIView {
   private var pool = ReusePool<EventView>()
 
   public var firstEventYPosition: CGFloat? {
-    let first = regularLayoutAttributes.sorted{$0.frame.origin.y < $1.frame.origin.y}.first
+    let sortedAtributes = regularLayoutAttributes.sorted{$0.frame.origin.y < $1.frame.origin.y}
+    let first = sortedAtributes.first{ !$0.descriptor.isEmptyEvent } ?? sortedAtributes.first
     guard let firstEvent = first else {return nil}
     let firstEventPosition = firstEvent.frame.origin.y
     let beginningOfDayPosition = dateToY(date)
@@ -249,6 +250,10 @@ public final class TimelineView: UIView {
     
     backgroundColor = style.backgroundColor
     setNeedsDisplay()
+  }
+
+  public func updateCalendar(_ newCalendar: Calendar) {
+    calendar = newCalendar
   }
   
   // MARK: - Background Pattern

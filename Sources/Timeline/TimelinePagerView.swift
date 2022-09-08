@@ -116,11 +116,25 @@ public final class TimelinePagerView: UIView, UIGestureRecognizerDelegate, UIScr
     pagingViewController.view.backgroundColor = style.backgroundColor
   }
 
+  public func updateCalendar(_ newCalendar: Calendar) {
+    calendar = newCalendar
+    pagingViewController.viewControllers?.forEach({ (timelineContainer) in
+      if let controller = timelineContainer as? TimelineContainerController {
+        self.updateCalendarOfTimelineContainer(controller: controller)
+      }
+    })
+  }
+
   private func updateStyleOfTimelineContainer(controller: TimelineContainerController) {
     let container = controller.container
     let timeline = controller.timeline
     timeline.updateStyle(style)
     container.backgroundColor = style.backgroundColor
+  }
+
+  private func updateCalendarOfTimelineContainer(controller: TimelineContainerController) {
+    let timeline = controller.timeline
+    timeline.updateCalendar(calendar)
   }
   
   private func updateEventEditingSnappingBehavior() {

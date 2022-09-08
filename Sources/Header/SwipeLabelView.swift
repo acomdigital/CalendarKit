@@ -76,6 +76,11 @@ public final class SwipeLabelView: UIView, DayViewStateUpdating {
     }
   }
 
+  public func updateCalendar(_ newCalendar: Calendar) {
+    calendar = newCalendar
+    updateLabelText()
+  }
+
   private func animate(_ direction: AnimationDirection) {
     let multiplier: CGFloat = direction == .Forward ? -1 : 1
     let shiftRatio: CGFloat = 30/375

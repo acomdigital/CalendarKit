@@ -79,6 +79,11 @@ open class DayViewController: UIViewController, EventDataSource, DayViewDelegate
     dayView.updateStyle(newStyle)
   }
 
+  open func updateCalendar(_ newCalendar: Calendar) {
+    calendar = newCalendar
+    dayView.updateCalendar(newCalendar)
+  }
+
   open func eventsForDate(_ date: Date) -> [EventDescriptor] {
     return [Event]()
   }
