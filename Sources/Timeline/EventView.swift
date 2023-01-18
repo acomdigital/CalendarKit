@@ -7,6 +7,8 @@ public protocol EventViewDelegate: AnyObject {
 }
 
 open class EventView: UIView {
+  public static var drawStrokeLine = false
+
   public var descriptor: EventDescriptor?
   public var color = SystemColors.label
 
@@ -114,6 +116,8 @@ open class EventView: UIView {
 
   override open func draw(_ rect: CGRect) {
     super.draw(rect)
+    guard EventView.drawStrokeLine else { return }
+
     guard let context = UIGraphicsGetCurrentContext() else {
       return
     }
